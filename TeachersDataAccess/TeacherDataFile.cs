@@ -22,7 +22,7 @@ namespace TeacherDataStore
                 TeacherDetails TeachersDets = new TeacherDetails();
                 TeachersDets.ID = Convert.ToInt32(entries[0]);
                 TeachersDets.Name = entries[1];
-                TeachersDets.Class = Convert.ToInt32(entries[2]);
+                TeachersDets.Class = entries[2];
                 TeachersDets.Section = entries[3];
 
                 Teachers.Add(TeachersDets);
@@ -40,7 +40,7 @@ namespace TeacherDataStore
         {
             int IDfromUser;
             string NamefromUser;
-            int ClassfromUser;
+            string ClassfromUser;
             string SectionfromUser;
 
             List<string> NewRecord = new List<string>();
@@ -55,7 +55,8 @@ namespace TeacherDataStore
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Please Enter Teacher's Class : ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            ClassfromUser = Convert.ToInt32(Console.ReadLine());
+            ClassfromUser = Console.ReadLine();
+
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Please Enter Teacher's section : ");
             Console.ForegroundColor = ConsoleColor.Cyan;
@@ -72,34 +73,31 @@ namespace TeacherDataStore
             string response1 = Console.ReadLine();
             Console.ForegroundColor = ConsoleColor.Green;
 
-
             if (response1.ToLower() == "y")
             {
 
                 List<TeacherDetails> TeachersList = new List<TeacherDetails>();
                 string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
-                List<string> Lines1 = File.ReadAllLines(Filepath).ToList();
+                List<string> Lines = File.ReadAllLines(Filepath).ToList();
 
-                foreach (var line in Lines1)
+                foreach (var line in Lines)
                 {
                     string[] entries = line.Split(',');
 
                     TeacherDetails TeachersDets = new TeacherDetails();
                     TeachersDets.ID = Convert.ToInt32(entries[0]);
                     TeachersDets.Name = entries[1];
-                    TeachersDets.Class = Convert.ToInt32(entries[2]);
+                    TeachersDets.Class = entries[2];
                     TeachersDets.Section = entries[3];
 
                     TeachersList.Add(TeachersDets);
                 }
 
                 TeachersList.Add(new TeacherDetails { ID = IDfromUser, Name = NamefromUser, Class = ClassfromUser, Section = SectionfromUser });
-
                 foreach (var Teacher in TeachersList)
                 {
                     NewRecord.Add($"{Teacher.ID},{Teacher.Name},{Teacher.Class},{Teacher.Section}");
                 }
-
                 File.WriteAllLines(Filepath, NewRecord);
             }
             else
@@ -125,7 +123,8 @@ namespace TeacherDataStore
                 TeacherDetails TeachersDets = new TeacherDetails();
                 TeachersDets.ID = Convert.ToInt32(entries[0]);
                 TeachersDets.Name = entries[1];
-                TeachersDets.Class = Convert.ToInt32(entries[2]);
+                //TeachersDets.Class = Convert.ToInt32(entries[2]);
+                TeachersDets.Class = entries[2];
                 TeachersDets.Section = entries[3];
                 TeachersList2.Add(TeachersDets);
             }
@@ -153,7 +152,8 @@ namespace TeacherDataStore
         {
             int IDToUpdate;
             string NamefromUser;
-            int ClassfromUser;
+            //int ClassfromUser;
+            string ClassfromUser;
             string SectionfromUser;
             string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
             List<string> UpdatedRecord = new List<string>();
@@ -171,7 +171,7 @@ namespace TeacherDataStore
                 TeacherDetails TeachersDets = new TeacherDetails();
                 TeachersDets.ID = Convert.ToInt32(entries[0]);
                 TeachersDets.Name = entries[1];
-                TeachersDets.Class = Convert.ToInt32(entries[2]);
+                TeachersDets.Class = entries[2];
                 TeachersDets.Section = entries[3];
                 TeachersList3.Add(TeachersDets);
             }
@@ -187,7 +187,7 @@ namespace TeacherDataStore
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Please Enter Teacher's Class : ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
-                ClassfromUser = Convert.ToInt32(Console.ReadLine());
+                ClassfromUser = Console.ReadLine();
                 Console.ForegroundColor = ConsoleColor.Yellow;
                 Console.Write("Please Enter Teacher's section : ");
                 Console.ForegroundColor = ConsoleColor.Cyan;
@@ -295,7 +295,7 @@ namespace TeacherDataStore
                 {
                     if (UserSelection != "N")
                     {
-                        Console.Write("\n___Do you want to enter Another Teacher's details (y/n) : ");
+                        Console.Write("\n___Do you want to go back to Main Menu (y/n)___ : ");
                         Console.ForegroundColor = ConsoleColor.Cyan;
                         UserSelection = Console.ReadLine().ToUpper();
                         if (UserSelection != "Y" && UserSelection != "N")
@@ -304,7 +304,12 @@ namespace TeacherDataStore
                         }
                     }
                     else
-                        break; 
+                    {
+                        Console.ForegroundColor = ConsoleColor.DarkBlue;
+                        Console.WriteLine("\n___Thanks! Please visit us again___");
+                        Console.ForegroundColor = ConsoleColor.White;
+                        break;
+                    }
                 }
                 while (UserSelection != "Y" && UserSelection != "N");
             }
