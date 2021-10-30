@@ -1,3 +1,3 @@
-123,Krish,BTech,IT
+123,Krish,M.Tech,CS
 652,Pallabi Biswas,BTech,IT
 56,Nandini ,BTech,CS

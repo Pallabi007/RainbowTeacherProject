@@ -8,7 +8,7 @@ namespace TeacherDataStore
 {
     class TeacherDataFile
     {
-        static bool FileisEmpty()
+        static bool IsFileEmpty()
         {
             string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
 
@@ -25,7 +25,7 @@ namespace TeacherDataStore
         {
             string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
             Console.ForegroundColor = ConsoleColor.Cyan;
-            if (!FileisEmpty())
+            if (!IsFileEmpty())
             {
                 List<TeacherDetails> Teachers = new List<TeacherDetails>();
                 List<string> Lines = File.ReadAllLines(Filepath).ToList();
@@ -98,7 +98,7 @@ namespace TeacherDataStore
                 List<TeacherDetails> TeachersList = new List<TeacherDetails>();
                 string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
 
-                if (!FileisEmpty())
+                if (!IsFileEmpty())
                 {
                      List<string> Lines = File.ReadAllLines(Filepath).ToList();
 
@@ -145,7 +145,6 @@ namespace TeacherDataStore
                 TeacherDetails TeachersDets = new TeacherDetails();
                 TeachersDets.ID = Convert.ToInt32(entries[0]);
                 TeachersDets.Name = entries[1];
-                //TeachersDets.Class = Convert.ToInt32(entries[2]);
                 TeachersDets.Class = entries[2];
                 TeachersDets.Section = entries[3];
                 TeachersList2.Add(TeachersDets);
@@ -174,7 +173,6 @@ namespace TeacherDataStore
         {
             int IDToUpdate;
             string NamefromUser;
-            //int ClassfromUser;
             string ClassfromUser;
             string SectionfromUser;
             string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
@@ -184,6 +182,7 @@ namespace TeacherDataStore
             Console.ForegroundColor = ConsoleColor.Cyan;
             IDToUpdate = Convert.ToInt32(Console.ReadLine());
             Console.ForegroundColor = ConsoleColor.Cyan;
+
             List<TeacherDetails> TeachersList3 = new List<TeacherDetails>();
             List<string> Lines3 = File.ReadAllLines(Filepath).ToList();
 
