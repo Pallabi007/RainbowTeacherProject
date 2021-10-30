@@ -62,70 +62,115 @@ namespace TeacherDataStore
             string NamefromUser;
             string ClassfromUser;
             string SectionfromUser;
+            bool IDvalidated = false;
+            bool Namevalidated = false;
+            bool Optionalvalidated = false;
 
             List<string> NewRecord = new List<string>();
+
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("\nPlease Enter Teacher's Badge Id : ");
             Console.ForegroundColor = ConsoleColor.Cyan;
-            IDfromUser = Convert.ToInt32(Console.ReadLine());
+            string ID = Console.ReadLine();
+            if (!string.IsNullOrEmpty(ID))
+            {
+                IDfromUser = Convert.ToInt32(ID);
+                IDvalidated = true;
+            }
+            else
+            {
+                IDfromUser = 0;
+            }                  
+            
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Please Enter Teacher's Name : ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             NamefromUser = Console.ReadLine();
+            if (!string.IsNullOrEmpty(NamefromUser))
+                Namevalidated = true;            
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Please Enter Teacher's Class : ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             ClassfromUser = Console.ReadLine();
-
+            if (!string.IsNullOrEmpty(ClassfromUser))
+                Optionalvalidated = true;           
             Console.ForegroundColor = ConsoleColor.Yellow;
             Console.Write("Please Enter Teacher's section : ");
             Console.ForegroundColor = ConsoleColor.Cyan;
             SectionfromUser = Console.ReadLine();
-            Console.WriteLine("\n___Please verify the below details :");
-            Console.WriteLine("Teacher's Id - " + IDfromUser);
-            Console.WriteLine("Teacher's Name - " + NamefromUser);
-            Console.WriteLine("Teacher's Class - " + ClassfromUser);
-            Console.WriteLine("Teacher's section - " + SectionfromUser.ToUpper());
+            if (!string.IsNullOrEmpty(SectionfromUser))
+                Optionalvalidated = true;
 
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.Write("\n___Do you want to save the details in the register (y/n) : ");
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            string response1 = Console.ReadLine();
-            Console.ForegroundColor = ConsoleColor.Green;
-
-            if (response1.ToLower() == "y")
+            if (!IDvalidated && !Namevalidated)
             {
-                List<TeacherDetails> TeachersList = new List<TeacherDetails>();
-                string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
-
-                if (!IsFileEmpty())
-                {
-                     List<string> Lines = File.ReadAllLines(Filepath).ToList();
-
-                    foreach (var line in Lines)
-                    {
-                        string[] entries = line.Split(',');
-
-                        TeacherDetails TeachersDets = new TeacherDetails();
-                        TeachersDets.ID = Convert.ToInt32(entries[0]);
-                        TeachersDets.Name = entries[1];
-                        TeachersDets.Class = entries[2];
-                        TeachersDets.Section = entries[3];
-
-                        TeachersList.Add(TeachersDets);
-                    }
-                }
-                TeachersList.Add(new TeacherDetails { ID = IDfromUser, Name = NamefromUser, Class = ClassfromUser, Section = SectionfromUser });
-                foreach (var Teacher in TeachersList)
-                {
-                    NewRecord.Add($"{Teacher.ID},{Teacher.Name},{Teacher.Class},{Teacher.Section}");
-                }
-                File.WriteAllLines(Filepath, NewRecord);
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\nERROR :: Teacher's 'ID' and 'Name' can not be null. Please enter again :");
+            }
+            else if (!IDvalidated)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\nERROR :: Teacher's 'ID' can not be null. Please enter again :");
+            }
+            else if (!Namevalidated)
+            {
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine("\nERROR :: Teacher's 'Name' can not be null. Please enter again :");
             }
             else
             {
-                Console.WriteLine("___Enter correct details again___");
-                EnterDetails();
+                if (!Optionalvalidated)
+                {
+                    Console.ForegroundColor = ConsoleColor.Blue;
+                    Console.WriteLine("\nWarning :: Teacher's 'Class' or 'Section' is null.:\n");
+                }
+
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("\n___Please verify the below details before saving :");
+                Console.WriteLine("Teacher's Id - " + IDfromUser);
+                Console.WriteLine("Teacher's Name - " + NamefromUser);
+                Console.WriteLine("Teacher's Class - " + ClassfromUser);
+                Console.WriteLine("Teacher's section - " + SectionfromUser.ToUpper());
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write("\n___Do you want to save the details in the register (y/n) : ");
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                string response1 = Console.ReadLine();
+                Console.ForegroundColor = ConsoleColor.Green;
+
+                if (response1.ToLower() == "y")
+                {
+                    List<TeacherDetails> TeachersList = new List<TeacherDetails>();
+                    string Filepath = Directory.GetParent(Environment.CurrentDirectory).Parent.Parent.FullName + "\\Data\\TeacherData.txt";
+
+                    if (!IsFileEmpty())
+                    {
+                        List<string> Lines = File.ReadAllLines(Filepath).ToList();
+
+                        foreach (var line in Lines)
+                        {
+                            string[] entries = line.Split(',');
+
+                            TeacherDetails TeachersDets = new TeacherDetails();
+                            TeachersDets.ID = Convert.ToInt32(entries[0]);
+                            TeachersDets.Name = entries[1];
+                            TeachersDets.Class = entries[2];
+                            TeachersDets.Section = entries[3];
+
+                            TeachersList.Add(TeachersDets);
+                        }
+                    }
+                    TeachersList.Add(new TeacherDetails { ID = IDfromUser, Name = NamefromUser, Class = ClassfromUser, Section = SectionfromUser });
+                    foreach (var Teacher in TeachersList)
+                    {
+                        NewRecord.Add($"{Teacher.ID},{Teacher.Name},{Teacher.Class},{Teacher.Section}");
+                    }
+                    File.WriteAllLines(Filepath, NewRecord);
+                }
+                else
+                {
+                    Console.WriteLine("___Enter correct details again___");
+                    EnterDetails();
+                }
             }
             
         }
@@ -316,12 +361,14 @@ namespace TeacherDataStore
                 {
                     if (UserSelection != "N")
                     {
-                        Console.Write("\n___Do you want to go back to Main Menu (y/n)___ : ");
                         Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write("\n___Do you want to go back to Main Menu (y/n)___ : ");
+                        Console.ForegroundColor = ConsoleColor.Green;
                         UserSelection = Console.ReadLine().ToUpper();
                         if (UserSelection != "Y" && UserSelection != "N")
                         {
-                            Console.Write("\n___Invalid Input___");
+                            Console.ForegroundColor = ConsoleColor.DarkRed;
+                            Console.Write("___Invalid Input___\n");
                         }
                     }
                     else
