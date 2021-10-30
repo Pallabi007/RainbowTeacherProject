@@ -1,6 +1,3 @@
-234,Pallabi Biswas,BTech,IT
-56,yuo,btech,BT
-678,Vrinda,BTech,CS
-78,kONA,IT,IT
-78,po,yu,ui
-78,hk,hj,hj
+123,Krish,BTech,IT
+652,Pallabi Biswas,BTech,IT
+56,Nandini ,BTech,CS
